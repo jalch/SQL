@@ -1,0 +1,40 @@
+/* simple lead function */
+select
+day,
+sum(users),
+lead(sum(users)) over (order by day)
+from statistics
+group by 1;
+
+/*calculate day to day deltas */
+
+select 
+day, revenue,
+lead(revenue) over (order by day),
+revenue - lead(revenue) over (order by day) as difference
+from statistics
+where website_id = 1
+
+
+/* USERS BY DAY AND 7 DAYS LATER */
+select day, users,
+lead(users,7) over (order by day)
+from statistics 
+WHERE DAY BETWEEN
+'2016-05-01' AND '2016-05-14'
+AND WEBSITE_ID = 2;
+
+SELECT
+  name,
+  opened,
+  LEAD(opened,2,'2000-01-01') OVER(ORDER BY opened)
+FROM website;
+
+/* RPM 7 days later */
+select day,
+(revenue/impressions) *1000 as RPM,
+lead(((revenue/impressions)*1000),7) over (order by day) as RPM_7
+from statistics
+where website_id = 2;
+
+
