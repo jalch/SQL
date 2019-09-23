@@ -1,0 +1,16 @@
+select ID, name, item, price,
+min(price) over(),
+price - min(price) over()
+from(select purchase.id, department.name, purchase.item, purchase.price
+from purchase
+join department
+on department.id = purchase.department_id)as temp;
+
+select id, date, model, max_speed,
+max(max_speed) over (partition by route_id, date)
+from
+
+(select journey.id, journey.date, train.model, train.max_speed,journey.route_id
+from journey
+join train
+on train.id = journey.train_id)as temp;
